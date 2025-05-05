@@ -26,7 +26,7 @@ func NewMatch(p1, p2 *Player) *Match {
 		match.currentTurn = p2
 	}
 
-	match.currentTurn.StartMoveTimer()
+	// match.currentTurn.StartMoveTimer()
 	return match
 }
 
@@ -73,7 +73,7 @@ func (m *Match) ProcessMove(player *Player, row, col int) {
 		player.opponent.send <- bytes
 
 		player.StopMoveTimer()
-		player.opponent.StartMoveTimer()
+		// player.opponent.StartMoveTimer()
 		m.currentTurn = player.opponent
 	}
 }

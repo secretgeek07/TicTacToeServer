@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"sync"
 )
@@ -38,9 +37,10 @@ func (m *Matchmaker) AddPlayer(p *Player) {
 		startMessageP := []byte(`{"action":"start", "mark":"X"}`)
 		startMessageO := []byte(`{"action":"start", "mark":"O"}`)
 
-		fmt.Println("Sent start message to both players")
+		log.Println("Going to send start message to both players")
 		p.send <- startMessageP
 		opponent.send <- startMessageO
+		log.Println("Sent start message to both players")
 
 	} else {
 		m.queue = append(m.queue, p)

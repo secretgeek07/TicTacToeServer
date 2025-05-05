@@ -50,8 +50,11 @@ func (p *Player) readMessages() {
 }
 
 func (p *Player) writeMessages() {
+	log.Printf("Writing message for player")
 	for {
 		message, ok := <-p.send
+		log.Printf("message: %s", message)
+		log.Printf("ok: %t", ok)
 		if !ok {
 			return
 		}
