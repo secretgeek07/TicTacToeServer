@@ -32,24 +32,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	}
 
 	player := NewPlayer(ws)
-	player.Listen() // ✅ This starts read and write loops
+	player.Listen()
 
 	MatchmakerInstance.AddPlayer(player)
 }
-
-// func handleConnections(w http.ResponseWriter, r *http.Request) {
-// 	upgrader := websocket.Upgrader{
-// 		CheckOrigin: func(r *http.Request) bool { return true },
-// 	}
-
-// 	conn, err := upgrader.Upgrade(w, r, nil)
-// 	if err != nil {
-// 		log.Println("Upgrade error:", err)
-// 		return
-// 	}
-
-// 	player := NewPlayer(conn)
-// 	player.Listen() // ✅ This starts read and write loops
-
-// 	MatchmakerInstance.AddPlayer(player)
-// }

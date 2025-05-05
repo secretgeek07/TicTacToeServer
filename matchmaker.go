@@ -27,13 +27,12 @@ func (m *Matchmaker) AddPlayer(p *Player) {
 		p.playerMark = "X"
 		opponent.playerMark = "O"
 
-		// Create the match instance
 		match := NewMatch(p, opponent)
 		p.match = match
 		opponent.match = match
 
 		log.Println("Matching two players. Starting match...")
-		// Send start messages
+
 		startMessageP := []byte(`{"action":"start", "mark":"X"}`)
 		startMessageO := []byte(`{"action":"start", "mark":"O"}`)
 
