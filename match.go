@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"sync"
+	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type Match struct {
@@ -41,13 +44,28 @@ func (m *Match) EndGameDueToTimeout() {
 
 	log.Println("Ending game due to timeout")
 
+	// if m.player1 != nil {
+	// 	m.player1.send <- []byte(`{"action":"timeout"}`)
+	// 	m.player1.conn.Close()
+	// }
+	// if m.player2 != nil {
+	// 	m.player2.send <- []byte(`{"action":"timeout"}`)
+	// 	m.player2.conn.Close()
+	// }
+
 	if m.player1 != nil {
 		m.player1.send <- []byte(`{"action":"timeout"}`)
-		m.player1.conn.Close()
+		go func(c *websocket.Conn) {
+			time.Sleep(1 * time.Second) // give time for message to be sent
+			c.Close()
+		}(m.player1.conn)
 	}
 	if m.player2 != nil {
 		m.player2.send <- []byte(`{"action":"timeout"}`)
-		m.player2.conn.Close()
+		go func(c *websocket.Conn) {
+			time.Sleep(1 * time.Second) // give time for message to be sent
+			c.Close()
+		}(m.player2.conn)
 	}
 }
 
@@ -87,8 +105,16 @@ func (m *Match) PlayerLeft(leavingPlayer *Player) {
 
 	m.active = false
 
+	// if leavingPlayer.opponent != nil {
+	// 	leavingPlayer.opponent.send <- []byte(`{"action":"opponent_left"}`)
+	// 	leavingPlayer.opponent.conn.Close()
+	// }
+
 	if leavingPlayer.opponent != nil {
 		leavingPlayer.opponent.send <- []byte(`{"action":"opponent_left"}`)
-		leavingPlayer.opponent.conn.Close()
+		go func(c *websocket.Conn) {
+			time.Sleep(1 * time.Second)
+			c.Close()
+		}(leavingPlayer.opponent.conn)
 	}
 }

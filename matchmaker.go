@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 	"sync"
+	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type Matchmaker struct {
@@ -66,9 +69,16 @@ func (m *Matchmaker) RemovePlayer(p *Player) {
 		if p.match.active {
 			p.match.active = false
 
+			// if p.opponent != nil {
+			// 	p.opponent.send <- []byte(`{"action":"opponent_left"}`)
+			// 	p.opponent.conn.Close()
+			// }
 			if p.opponent != nil {
 				p.opponent.send <- []byte(`{"action":"opponent_left"}`)
-				p.opponent.conn.Close()
+				go func(c *websocket.Conn) {
+					time.Sleep(1 * time.Second)
+					c.Close()
+				}(p.opponent.conn)
 			}
 		}
 	}

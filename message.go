@@ -25,7 +25,7 @@ func HandleIncomingMessage(p *Player, rawMsg []byte) {
 			p.match.ProcessMove(p, msg.Row, msg.Col)
 		}
 	case "join":
-		log.Println("Player sent join request again.")
+		log.Println("Player sent join request.")
 	default:
 		log.Println("Unknown action:", msg.Action)
 	}
